@@ -1,0 +1,188 @@
+
+{% extends 'sitepages/base1.html' %}
+{% load static %}
+{% block homepage_content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header">
+        <h1 class="display-3 text-uppercase text-white mb-3">Car Booking</h1>
+        <div class="d-inline-flex text-white">
+            <h6 class="text-uppercase m-0"><a class="text-white" href="/">Home</a></h6>
+            <h6 class="text-body m-0 px-3">/</h6>
+            <h6 class="text-uppercase text-body m-0">Car Booking</h6>
+        </div>
+    </div>
+    <!-- Page Header Start -->
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+    <!-- Detail Start -->
+    <div class="container-fluid pt-5">
+        <div class="container pt-5 pb-3">
+            <h1 class="display-4 text-uppercase mb-5">{{ car.name }}</h1>
+            <div class="row align-items-center pb-2">
+                <div class="col-lg-6 mb-4">
+                    <img class="img-fluid" src="{{ car.image.url }}" alt="{{ car.name }}">
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <h4 class="mb-2">${{ car.daily_rate }}/Day</h4>
+                    <div class="d-flex mb-3">
+                        <h6 class="mr-2">Rating:</h6>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star-half-alt text-primary mr-1"></small>
+                            <small>(250)</small> <!-- Static rating count -->
+                        </div>
+                    </div>
+                    <p>{{ car.description }}</p> <!-- Display car description -->
+                    <div class="d-flex pt-1">
+                        <h6>Share on:</h6>
+                        <div class="d-inline-flex">
+                            <a class="px-2" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="px-2" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="px-2" href=""><i class="fab fa-linkedin-in"></i></a>
+                            <a class="px-2" href=""><i class="fab fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-n3 mt-lg-0 pb-4">
+                <div class="col-md-3 col-6 mb-2">
+                    <i class="fa fa-car text-primary mr-2"></i>
+                    <span>Model: {{ car.model_year }}</span> <!-- Display model -->
+                </div>
+                <div class="col-md-3 col-6 mb-2">
+                    <i class="fa fa-cogs text-primary mr-2"></i>
+                    <span>{{ car.transmission }}</span> <!-- Display transmission type -->
+                </div>
+                <div class="col-md-3 col-6 mb-2">
+                    <i class="fa fa-road text-primary mr-2"></i>
+                    <span>{{ car.mileage }} km/liter</span> <!-- Display mileage -->
+                </div>
+                <div class="col-md-3 col-6 mb-2">
+                    <i class="fa fa-eye text-primary mr-2"></i>
+                    <span>{% if car.gps_navigation %}GPS Navigation{% else %}No GPS{% endif %}</span> <!-- Display features (like GPS Navigation) -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Detail End -->
+    
+
+
+    <!-- Car Booking Start -->
+    <!-- Car Booking Start -->
+    <div class="container-fluid pb-5">
+        <div class="container">
+            <div class="row">
+                <!-- Personal Detail Section -->
+                <div class="col-lg-8">
+                    <h2 class="mb-4">Personal Detail</h2>
+                 <form action="{% url 'sitepages:confirm_booking' %}" method="post">
+                        {% csrf_token %}
+
+                    <input type="hidden" name="total_cost" value="{{ total_cost }}">
+                    <div class="mb-5">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control p-4" id="first_name" name="first_name" placeholder="First Name" required="required">
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control p-4" id="last_name" name="last_name" placeholder="Last Name" required="required">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control p-4" id="email" name="email" placeholder="Your Email" required="required">
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="mobile_number">Mobile Number</label>
+                                <input type="text" class="form-control p-4" id="mobile_number" name="mobile_number" placeholder="Mobile Number" required="required">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Booking Detail Section -->
+                    <h2 class="mb-4">Booking Details</h2>
+                    <div class="mb-5">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="pickup_location">Pickup Location</label>
+                                <input type="text" class="form-control p-4" id="pickup_location" value="{{ pickup_location.name }}" readonly>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="drop_location">Drop-off Location</label>
+                                <input type="text" class="form-control p-4" id="drop_location" value="{{ drop_location.name }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="pickup_datetime">Pickup Date and Time</label>
+                                <input type="text" class="form-control p-4" id="pickup_datetime" value="{{ pickup_datetime|date:'Y-m-d H:i' }}" readonly>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="dropoff_datetime">Drop-off Date and Time</label>
+                                <input type="text" class="form-control p-4" id="dropoff_datetime" value="{{ dropoff_datetime|date:'Y-m-d H:i' }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="rental_days">Total Rental Days</label>
+                                <input type="text" class="form-control p-4" id="rental_days" value="Total Rental Days: {{ rental_days }}" readonly>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="total_cost">Total Cost</label>
+                                <input type="text" class="form-control p-4" id="total_cost" value="Total Cost: ${{ total_cost }}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="special_request">Special Request</label>
+                            <textarea class="form-control py-3 px-4" id="special_request" rows="3" placeholder="Special Request" name="special_request" required></textarea>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Payment Section -->
+                <!-- Payment Section -->
+<div class="col-lg-4">
+    <div class="bg-secondary p-5 mb-5">
+        <h2 class="text-primary mb-4">Payment</h2>
+        <div class="form-group">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="payment_method" id="stripe" value="stripe">
+                <label class="custom-control-label" for="stripe">Stripe</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-radio">
+                <input type="radio" class="custom-control-input" name="payment_method" id="paypal" value="paypal">
+                <label class="custom-control-label" for="paypal">Paypal</label>
+            </div>
+        </div>
+        <button class="btn btn-block btn-primary py-3">Reserve Now</button>
+    </div>
+</div>
+            </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+<!-- Car Booking End -->
+
+
+
+    {%endblock%}

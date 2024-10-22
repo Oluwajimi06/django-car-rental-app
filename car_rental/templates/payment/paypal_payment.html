@@ -1,0 +1,36 @@
+{% extends 'sitepages/base1.html' %}
+{% load static %}
+{% block homepage_content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header">
+    <h1 class="display-3 text-uppercase text-white mb-3">Paypal Payment</h1>
+    <div class="d-inline-flex text-white">
+        <h6 class="text-uppercase m-0"><a class="text-white" href="">Home</a></h6>
+        <h6 class="text-body m-0 px-3">/</h6>
+        <h6 class="text-uppercase text-body m-0">Paypal Payment</h6>
+    </div>
+</div>
+<!-- Page Header Start -->
+
+
+<div class="container">
+    <h1>Pay for your Car Rental</h1>
+    <p>Car: {{ car_name }}</p>
+    <!-- <p>Pickup Date: {{ pickup_datetime }}</p>
+    <p>Dropoff Date: {{ dropoff_datetime }}</p> -->
+    <p>Total Cost: {{ total_cost }} {{ currency }}</p>
+
+    <form action="{% url 'sitepages:paypal_payment' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="total_cost" value="{{ total_cost }}">
+        <input type="hidden" name="pickup_datetime" value="{{ pickup_datetime }}">
+        <input type="hidden" name="dropoff_datetime" value="{{ dropoff_datetime }}">
+        <input type="hidden" name="currency" value="{{ currency }}">
+        <!-- Include any other hidden fields you need here -->
+
+        <button type="submit" class="btn btn-primary">Proceed to PayPal</button>
+    </form>
+</div>
+
+{%endblock%}

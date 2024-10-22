@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Booking Notification</title>
+</head>
+<body>
+    <h1>New Booking Notification</h1>
+    <p>Dear Owner,</p>
+    <p>A new booking has been confirmed with the following details:</p>
+    <ul>
+        <li>Customer Name: {{ booking.first_name }} {{ booking.last_name }}</li>
+        <li>Email: {{ booking.email }}</li>
+        <li>Mobile Number: {{ booking.mobile_number }}</li>
+        <li>Car: {{ booking.car.name }}</li>
+        <li>Pickup Location: {{ booking.pickup_location.name }}</li>
+        <li>Drop Location: {{ booking.drop_location.name }}</li>
+        <li>Pickup Date: {{ booking.pickup_datetime|date:"Y-m-d" }}</li>
+        <li>Dropoff Date: {{ booking.dropoff_datetime|date:"Y-m-d" }}</li>
+        <li>Total Cost: ${{ booking.total_cost }}</li>
+        <li>Payment Method: {{ booking.payment_method }}</li>
+    </ul>
+    <p>Please check the booking system to manage this booking and ensure that the car is ready for pickup.</p>
+    <p>Thank you for your attention!</p>
+</body>
+</html>
+

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+</head>
+<body>
+    <h1>Booking Confirmation</h1>
+    <p>Dear {{ booking.first_name }} {{ booking.last_name }},</p>
+    <p>Your booking has been confirmed with the following details:</p>
+    <ul>
+        <li>Car: {{ booking.car.name }}</li>
+        <li>Pickup Location: {{ booking.pickup_location.name }}</li>
+        <li>Drop Location: {{ booking.drop_location.name }}</li>
+        <li>Pickup Date: {{ booking.pickup_datetime }}</li>
+        <li>Dropoff Date: {{ booking.dropoff_datetime }}</li>
+        <li>Total Cost: ${{ booking.total_cost }}</li>
+        <li>Payment Method: {{ booking.payment_method }}</li>
+    </ul>
+    <p>Thank you for choosing us! check the contact us page on the website to get a redirection to pick up the car based on your pickup location.</p>
+</body>
+</html>
