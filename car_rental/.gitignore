@@ -1,2 +1,3 @@
 .env
 appenv/
+/car_rental/db.sqlite3
